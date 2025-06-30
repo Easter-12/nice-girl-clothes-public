@@ -6,20 +6,23 @@ export default function AboutPage() {
     return (
         <div className={styles.container}>
             <Head>
-                <title>About Us - Nice Girl Clothes</title>
+                {/* CHANGED: Website Name */}
+                <title>About Us - Nicegelclothing</title>
             </Head>
 
             <header className={styles.header}>
+                {/* CHANGED: Website Name */}
                 <Link href="/" className={styles.logo}>
-                    Nice Girl Clothes
+                    Nicegelclothing
                 </Link>
             </header>
 
             <main className={styles.main}>
                 <div className={styles.aboutSection}>
-                    <h1>About Nice Girl Clothes</h1>
+                    {/* CHANGED: Website Name */}
+                    <h1>About Nicegelclothing</h1>
                     <p>
-                        Welcome to Nice Girl Clothes, where style meets craftsmanship. 
+                        Welcome to Nicegelclothing, where style meets craftsmanship. 
                         We believe that every woman deserves to wear clothes that make her feel beautiful, confident, and unique.
                     </p>
                     <p>
@@ -39,7 +42,8 @@ export default function AboutPage() {
                 <Link href="/" className={styles.footerLink}>
                     Back to Shop
                 </Link>
-                <p>© {new Date().getFullYear()} Nice Girl Clothes</p>
+                 {/* CHANGED: Website Name */}
+                <p>© {new Date().getFullYear()} Nicegelclothing</p>
             </footer>
         </div>
     );

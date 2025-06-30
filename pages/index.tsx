@@ -5,55 +5,40 @@ import { createClient } from '@supabase/supabase-js';
 import styles from '../styles/Public.module.css';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
-// Initialize Supabase Client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// --- The Main Component for the Public Page ---
 export default function HomePage() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
-    
-    // --- NEW: State for the "New Arrivals" banner ---
     const [showBanner, setShowBanner] = useState(false);
 
     useEffect(() => {
-        // --- This function now does two things ---
         const fetchProductsAndCheckForNew = async () => {
             setLoading(true);
-            
-            // 1. Fetch all products to display on the page
             const { data: allProducts, error: productsError } = await supabase
                 .from('products')
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (productsError) {
-                console.error('Error fetching products:', productsError);
-            } else {
-                setProducts(allProducts);
-            }
+            if (productsError) console.error('Error fetching products:', productsError);
+            else setProducts(allProducts);
 
-            // 2. NEW: Check for products added in the last 24 hours
             const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
             const { data: newProducts, error: newProductsError } = await supabase
                 .from('products')
                 .select('id', { count: 'exact' })
                 .gt('created_at', twentyFourHoursAgo);
 
-            if (!newProductsError && newProducts.length > 0) {
-                setShowBanner(true); // If new products exist, set state to show banner
-            }
+            if (!newProductsError && newProducts.length > 0) setShowBanner(true);
             
             setLoading(false);
         };
-
         fetchProductsAndCheckForNew();
     }, []);
     
-    // Social Media Links
     const socialLinks = {
         whatsapp: 'https://wa.me/2348103955817',
         telegram: 'https://t.me/nicegelclothing',
@@ -63,12 +48,12 @@ export default function HomePage() {
     return (
         <div className={styles.container}>
             <Head>
-                <title>Nice Girl Clothes</title>
+                {/* CHANGED: Website Name */}
+                <title>Nicegelclothing - Custom Fashion</title>
                 <meta name="description" content="Beautiful, custom-made clothes." />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            {/* --- NEW: The Banner itself. It only shows if showBanner is true --- */}
             {showBanner && (
                 <div className={styles.newArrivalsBanner}>
                     <span>✨ New Arrivals! Check out our latest designs.</span>
@@ -77,7 +62,8 @@ export default function HomePage() {
             )}
 
             <header className={styles.header}>
-                <div className={styles.logo}>Nice Girl Clothes</div>
+                {/* CHANGED: Website Name */}
+                <div className={styles.logo}>Nicegelclothing</div>
                 <div className={styles.menuIcon} onClick={() => setMenuOpen(!menuOpen)}>
                     <BsThreeDotsVertical />
                 </div>
@@ -93,19 +79,20 @@ export default function HomePage() {
             <main className={styles.main}>
                 <h1 className={styles.title}>Our Collection</h1>
                 
-                {loading ? (
-                    <p>Loading clothes...</p>
-                ) : (
+                {loading ? <p>Loading clothes...</p> : (
                     <div className={styles.productGrid}>
                         {products.map((product) => (
-                            <div key={product.id} className={styles.productCard}>
-                                <img src={product.image_url} alt={product.name} className={styles.cardImage} />
-                                <div className={styles.cardBody}>
-                                    <h2 className={styles.cardTitle}>{product.name}</h2>
-                                    <p className={styles.cardDescription}>{product.description}</p>
-                                    <p className={styles.cardPrice}>NGN {Number(product.price).toLocaleString()}</p>
+                            // NEW: Link wrapping the product card
+                            <Link href={`/products/${product.id}`} key={product.id} className={styles.productLink}>
+                                <div className={styles.productCard}>
+                                    <img src={product.image_url} alt={product.name} className={styles.cardImage} />
+                                    <div className={styles.cardBody}>
+                                        <h2 className={styles.cardTitle}>{product.name}</h2>
+                                        <p className={styles.cardDescription}>{product.description}</p>
+                                        <p className={styles.cardPrice}>NGN {Number(product.price).toLocaleString()}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 )}
@@ -115,7 +102,8 @@ export default function HomePage() {
                 <Link href="/about" className={styles.footerLink}>
                     About Us
                 </Link>
-                <p>© {new Date().getFullYear()} Nice Girl Clothes</p>
+                {/* CHANGED: Website Name */}
+                <p>© {new Date().getFullYear()} Nicegelclothing</p>
             </footer>
         </div>
     );
