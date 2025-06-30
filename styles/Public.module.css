@@ -4,39 +4,77 @@
     min-height: 100vh;
 }
 
-.header {
+/* --- NEW: STYLING FOR THE BANNER --- */
+.newArrivalsBanner {
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    color: white;
+    text-align: center;
+    padding: 12px 20px;
+    font-weight: 500;
     position: fixed;
     top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 101; /* Above the header */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.closeButton {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    line-height: 1;
+    padding: 0 5px;
+}
+/* --- END OF NEW STYLES --- */
+
+.header {
+    position: fixed;
+    top: 0; /* Changed to push it down if banner exists */
     left: 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background: rgba(255, 255, 255, 0.85); /* Slightly less transparent */
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     z-index: 100;
     border-bottom: 1px solid #f0f0f0;
 }
 
+/* If the banner is showing, we push the header and main content down */
+.container:has(.newArrivalsBanner) .header {
+    top: 45px; /* Height of the banner */
+}
+.container:has(.newArrivalsBanner) .main {
+    padding-top: 145px; /* Original padding + banner height */
+}
+
+
 .logo {
-    /* Using the elegant Title Font */
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
     font-weight: 700;
-    color: #1a1a1a; /* Darker for more contrast */
+    color: #1a1a1a;
 }
 
 .menuIcon {
-    font-size: 1.5rem; /* Better size for the new icon */
+    font-size: 1.5rem;
     cursor: pointer;
     color: #1a1a1a;
 }
 
 .socialMenu {
     position: absolute;
-    top: 70px; /* Adjusted for new header size */
+    top: 70px;
     right: 20px;
     background: white;
     border-radius: 8px;
@@ -65,11 +103,11 @@
     max-width: 1200px;
     width: 100%;
     margin: 0 auto;
+    transition: padding-top 0.3s ease; /* Smooth transition */
 }
 
 .title {
     text-align: center;
-    /* Using the elegant Title Font */
     font-family: 'Playfair Display', serif;
     font-size: 2.8rem;
     margin-bottom: 50px;
@@ -95,7 +133,7 @@
 
 .productCard {
     background: white;
-    border-radius: 8px; /* Subtler radius */
+    border-radius: 8px;
     border: 1px solid #eee;
     overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s;
@@ -122,7 +160,6 @@
 }
 
 .cardTitle {
-    /* Using the elegant Title Font */
     font-family: 'Playfair Display', serif;
     font-size: 1.4rem;
     margin: 0 0 10px;
